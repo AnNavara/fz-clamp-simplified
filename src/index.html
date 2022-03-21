@@ -4,45 +4,40 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/style.css">
-    <link rel="icon" href="./assets/clamp-svgrepo-com.svg" type="image/x-icon">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="icon" href="assets/clamp-svgrepo-com.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="scripts/index.js" defer></script>
     <title>fz:clamp() simplified</title>
 </head>
-<body>
-    <h1>Some Header</h1>
-    <p>some explanation and link to the spec</p>
-    <div>
-        Graphic goes here
-    </div>
-    <div>
-        <div>
-            <label>Input for clamp min</label>
-            <input type="text" name="" id="">
-        </div>
-        <div>
-            <label>Input for clamp desired</label>
-            <input type="text" name="" id="">
-        </div>
-        <div>
-            <label>Input for clamp max</label>
-            <input type="text" name="" id="">
-        </div>
-        <p>same but for extra font</p>
-        <div>
-            <label>Input for clamp min</label>
-            <input type="text" name="" id="">
-        </div>
-        <div>
-            <label>Input for clamp desired</label>
-            <input type="text" name="" id="">
-        </div>
-        <div>
-            <label>Input for clamp max</label>
-            <input type="text" name="" id="">
+<body class="container">
+    <h1 class="header">font-size:&nbsp;<code>clamp()</code>&nbsp;simplified</h1>
+    <p class="header__text"> CSS <code>clamp()</code> clamps a value between an upper and lower bound. <code>clamp()</code> enables selecting a middle value within a range of values between a defined minimum and maximum.
+        &nbsp;<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clamp" target="_blank">mdn</a>
+    </p>
+    <div class="inputs">
+        <h3><code>clamp()</code></h3>
+        <div class="inputs__list">
+            <div class="input">
+                <label>MIN</label>
+                <input type="text" name="" id="min" placeholder="Enter minimum value">
+            </div>
+            <div class="input">
+                <label>PREFERRED</label>
+                <input type="text" name="" id="pref" placeholder="Enter preffered value">
+            </div>
+            <div class="input">
+                <label>MAX</label>
+                <input type="text" name="" id="max" placeholder="Enter maximum value">
+            </div>
         </div>
     </div>
-    <div>
-        Previews of different font-size at different screen size
+    <div class="chart">
+        <div class="empty-space"></div>
+    </div>
+
+    <div class="preview">
+        <h3>Previews of different font-size at different screen size</h3>
         <div>320px</div>
         <div>600px</div>
         <div>900px</div>
