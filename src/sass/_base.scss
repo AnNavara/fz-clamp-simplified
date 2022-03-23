@@ -1,12 +1,14 @@
 // Color Variables
-$color-primary: #FF9225;
+$color-primary: #ffe0c1;
 $color-accent: #935C92;
 $color-accent-2: #FF5C26;
 
 $color-dark: #292929;
 $color-grey: #363636;
-$color-grey-light: #b5b4b4;
-$color-grey-light-2: #f0ede7;
+$color-grey-light: #e0deda;
+$color-grey-light-2: #fbfbfb;
+
+$color-back: #f3f1ea;
 
 // Font Variables
 $font-primary: 'Poppins', sans-serif;
@@ -30,6 +32,28 @@ html {
 body {
     font-family: $font-primary;
     line-height: 1.6;
+    background-color: $color-back;
+}
+
+.visually-hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+.visually-hidden.focusable:active,
+.visually-hidden.focusable:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
 }
 
 .container {
@@ -112,9 +136,43 @@ body {
 
     input {
         max-width: max(15rem);
+        border-radius: .25em;
     }
 }
 
-.preview {
+.previews {
+    margin-bottom: 6rem;
     grid-column: center-start / center-end;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.preview {
+    margin-top: 4rem;
+
+    > h3 {
+        padding-inline-start: 2em;
+        margin-bottom: 1em;
+    }
+
+    &__container {
+        padding-inline: 3rem;
+        padding-block: 2rem;
+        height: 500px;
+        background-color: $color-grey-light-2;
+        border-radius: 1em;
+    }
+
+    &--320 {
+        width: 320px;
+    }
+
+    &--600 {
+        width: 600px;
+    }
+
+    &--900 {
+        width: 900px;
+    }
 }
