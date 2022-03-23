@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="icon" href="assets/clamp-svgrepo-com.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="scripts/index.js" defer></script>
+    <title>fz:clamp() simplified</title>
+</head>
+<body class="container">
+    <h1 class="header">font-size:&nbsp;<code>clamp()</code>&nbsp;simplified</h1>
+    <p class="header__text"> CSS <code>clamp()</code> clamps a value between an upper and lower bound. <code>clamp()</code> enables selecting a middle value within a range of values between a defined minimum and maximum.
+        &nbsp;<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clamp" target="_blank">mdn</a>
+    </p>
+    <div class="inputs">
+        <h3><code>clamp()</code></h3>
+        <div class="inputs__list">
+            <div class="input">
+                <label>MIN</label>
+                <input type="text" data-model="min" placeholder="Enter minimum value">
+            </div>
+            <div class="input">
+                <label>PREFERRED</label>
+                <input type="text" data-model="pref" placeholder="Enter preffered value">
+            </div>
+            <div class="input">
+                <label>MAX</label>
+                <input type="text" data-model="max" placeholder="Enter maximum value">
+            </div>
+        </div>
+    </div>
+    <div class="chart">
+        <canvas data-chart="chart" width="720" height="500"></canvas>
+    </div>
+
+    <div class="previews ">
+        <h2 class="visually-hidden">Previews of different font-size at different screen size</h2>
+        <div data-viewport="320" class="preview preview--320">
+            <h3>320px</h3>
+            <div class="preview__container">
+                <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, eos!</h3>
+            </div>
+        </div>
+        <div data-viewport="600" class="preview preview--600">
+            <h3>600px</h3>
+            <div class="preview__container">
+                <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est vitae iste porro?</h3>
+            </div>
+        </div>
+        <div data-viewport="900" class="preview preview--900">
+            <h3>900px</h3>
+            <div class="preview__container">
+                <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit unde, ex earum, repellendus illum natus in aliquam ipsam maxime odio vel fugit quod, et repellat itaque ad adipisci! Magni, dicta.</h3>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
