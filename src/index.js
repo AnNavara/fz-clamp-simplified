@@ -8,13 +8,18 @@
 
 const REM = 10;
 const LIST_OF_UNITS = ['px', 'rem', 'vw'];
+const LIST_OF_VIEWPORTS = [
+    180, 220, 320, 360, 380, 410, 540, 768, 820, 1024, 1280, 1360, 1530,
+];
 const EXAMPLES = document.querySelectorAll('[data-viewport]');
+const canvas = document.querySelector('[data-chart]').getContext('2d');
 
 const createState = (stateObj) => {
     return new Proxy(stateObj, {
         set(target, property, value) {
             target[property] = value;
             render(EXAMPLES);
+            saveState(state);
             return true;
         },
     });
@@ -26,7 +31,28 @@ const state = createState({
     max: '',
 });
 
+const saveState = (state) => {
+    localStorage.setItem('state', JSON.stringify(state));
+};
+
 const listeners = document.querySelectorAll('[data-model]');
+
+const loadState = (inputs) => {
+    if (!localStorage.getItem) {
+        return;
+    }
+    const oldState = JSON.parse(localStorage.getItem('state'));
+    for (key in oldState) {
+        if (key in state) state[key] = oldState[key];
+    }
+    inputs.forEach((el) => {
+        for (key in oldState) {
+            if (key === el.dataset.model) {
+                el.value = oldState[key];
+            }
+        }
+    });
+};
 
 listeners.forEach((elem) => {
     const name = elem.dataset.model;
@@ -42,7 +68,7 @@ const parseString = (str) => {
         : valuesArr.push(str);
     const values = valuesArr.reduce((acc, curr) => {
         let unit = curr
-            .replace(/\d+|^\s+|\s+$/g, '')
+            .replace(/\.|\d+|^\s+|\s+$/g, '')
             .trim()
             .toLowerCase();
         let value = parseFloat(curr);
@@ -80,36 +106,92 @@ const calcAbsoluteFS = (values, viewport) => {
     return fontSize;
 };
 
-const updateExample = (example, { min, pref, max }) => {
-    let calculatedFS = null;
+const validateData = ({ min, pref, max }) => {
     if (
         parseString(min) === undefined ||
         parseString(pref) === undefined ||
         parseString(max) === undefined
     ) {
-        return;
+        return false;
+    } else {
+        return true;
     }
-
-    const calcMin = calcAbsoluteFS(parseString(min), example.dataset.viewport)
-    const calcPref = calcAbsoluteFS(parseString(pref), example.dataset.viewport)
-    const calcMax = calcAbsoluteFS(parseString(max), example.dataset.viewport)
-
-    if (calcMin < calcPref < calcMax) {
-        calculatedFS = calcPref
-    }
-    if (min > calcPref) {
-        calculatedFS = calcMin
-    }
-    if (calcMax < calcPref) {
-        calculatedFS = calcMax
-    }
-
-    example.querySelector('.preview__container h3').style.fontSize =
-        calculatedFS + 'px';
 };
 
+const getValidFS = (viewport, { min, pref, max }) => {
+    let calculatedFS = null;
+    const calcMin = calcAbsoluteFS(parseString(min), viewport);
+    const calcPref = calcAbsoluteFS(parseString(pref), viewport);
+    const calcMax = calcAbsoluteFS(parseString(max), viewport);
+    if (calcMin < calcPref < calcMax) {
+        calculatedFS = calcPref;
+    }
+    if (calcMin > calcPref) {
+        calculatedFS = calcMin;
+    }
+    if (calcMax < calcPref) {
+        calculatedFS = calcMax;
+    }
+    return calculatedFS;
+};
+
+const updateExample = (example, data) => {
+    if (!validateData(data)) {
+        return;
+    }
+    example.querySelector('.preview__container h3').style.fontSize =
+        getValidFS(example.dataset.viewport, data) + 'px';
+};
+
+const calcChartFS = (data) => {
+    if (!validateData(data)) {
+        return [];
+    }
+    const dataViewports = LIST_OF_VIEWPORTS.map((viewport) => {
+        return getValidFS(viewport, data);
+    });
+    return dataViewports;
+};
+
+const chart = new Chart(canvas, {
+    type: 'line',
+    data: {
+        labels: LIST_OF_VIEWPORTS,
+        datasets: [
+            {
+                label: 'font size px',
+                data: calcChartFS(state),
+                borderWidth: 2,
+            },
+        ],
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                title: 'fz in px',
+                display: true
+            },
+            x: {
+                title: 'viewport width',
+                display: true
+            }
+        },
+        elements: {
+            line: {
+                tension: 0.15,
+                borderColor: 'rgba(41, 41, 41, 0.68)',
+            },
+        },
+    },
+});
+
 const render = (previews) => {
-    previews.forEach(element => {
-        updateExample(element, state)
-    })
-}
+    previews.forEach((element) => {
+        updateExample(element, state);
+    });
+    chart.data.datasets[0].data = calcChartFS(state);
+    chart.update();
+};
+
+loadState(listeners);
