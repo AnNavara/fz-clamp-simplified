@@ -1,1 +1,1 @@
-https://annavara.github.io/fz-clamp/
+https://annavara.github.io/fz-clamp-simplified/build/
