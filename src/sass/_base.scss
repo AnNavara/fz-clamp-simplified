@@ -59,7 +59,7 @@ body {
 .container {
     display: grid;
     grid-template-columns:  [full-start] minmax(4vw, 1fr) 
-                            [center-start] repeat(8, [col-start] minmax(min-content, 14rem) [col-end]) [center-end]
+                            [center-start] repeat(12, [col-start] minmax(min-content, 11rem) [col-end]) [center-end]
                             minmax(4vw, 1fr) [full-end];
 }
 
@@ -75,7 +75,7 @@ body {
 
     &__text {
         margin-top: 2em;
-        grid-column: col-start 2 / col-end 7;
+        grid-column: col-start 4 / col-end 9;
         font-size: #{'clamp(.6rem, 1rem + 0.5vw, 2.2rem)'};
         font-weight: 300;
         color: $color-grey;
@@ -83,16 +83,19 @@ body {
 }
 
 .chart {
-    margin-top: 5rem;
+    margin-top: 6rem;
     position: relative;
-    grid-column: col-start 3 / center-end;
+    grid-column: col-start 4 / center-end;
 }
 
 .inputs {
-    margin-top: 5rem;
-    grid-column: center-start / col-end 2;
+    margin-top: 6rem;
+    padding-top: 3rem;
+    padding-right: 3rem;
+    grid-column: center-start / col-end 3;
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     gap: 1rem;
 
     &__list {
@@ -119,7 +122,13 @@ body {
     h3 {
         display: flex;
         justify-content: center;
-        font-size: #{'clamp(1rem, 1rem + 1vw, 2.5rem)'};
+        font-size: #{'clamp(1rem, 1rem + 0.3vw, 1.7rem)'};
+        cursor: pointer;
+    }
+
+    .clamp {
+        padding: 0.25em 0.75em;
+        width: 100%;
     }
 }
 
@@ -127,7 +136,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    padding-right: 3rem;
 
     input {
         max-width: max(15rem);
@@ -170,5 +178,22 @@ body {
 
     &--900 {
         width: 900px;
+    }
+}
+
+.popup {
+    position: absolute;
+    inset: 2em 2em auto auto;
+    padding: 0.25em 0.5em;
+    font-size: #{'clamp(.6rem, 1rem + 0.5vw, 2.2rem)'};
+    background-color: #fff;
+    border-radius: 0.15em;
+    transform: translateY(-8rem);
+    transition: all 0.3s ease-in-out;
+    animation-timing-function: ease-in-out;
+    animation-name: popup;
+
+    &.active {
+        transform: translateY(0);
     }
 }

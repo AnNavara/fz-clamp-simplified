@@ -12,6 +12,9 @@ const LIST_OF_VIEWPORTS = [
     180, 220, 320, 360, 380, 410, 540, 768, 820, 1024, 1280, 1360, 1530,
 ];
 const EXAMPLES = document.querySelectorAll('[data-viewport]');
+const clampElement = document.querySelector('.clamp');
+const listeners = document.querySelectorAll('[data-model]');
+const popup = document.querySelector('.popup');
 const canvas = document.querySelector('[data-chart]').getContext('2d');
 
 const createState = (stateObj) => {
@@ -34,8 +37,6 @@ const state = createState({
 const saveState = (state) => {
     localStorage.setItem('state', JSON.stringify(state));
 };
-
-const listeners = document.querySelectorAll('[data-model]');
 
 const loadState = (inputs) => {
     if (!localStorage.getItem) {
@@ -170,12 +171,12 @@ const chart = new Chart(canvas, {
         scales: {
             y: {
                 title: 'fz in px',
-                display: true
+                display: true,
             },
             x: {
                 title: 'viewport width',
-                display: true
-            }
+                display: true,
+            },
         },
         elements: {
             line: {
@@ -186,10 +187,46 @@ const chart = new Chart(canvas, {
     },
 });
 
+const createOutputString = (state) => {
+    let isValid = true;
+    let str = '';
+    for (key in state) {
+        if (state[key] === '') isValid = false;
+        if (state[key].includes('+')) {
+            str += `, #{${state[key]}}`;
+        } else {
+            key === 'min'
+                ? (str += `${state[key]}`)
+                : (str += `, ${state[key]}`);
+        }
+    }
+    if (!isValid) return false;
+    return str;
+};
+
+const updateClamp = (clampEl, state) => {
+    let string = createOutputString(state);
+    if (!string) return;
+    clampEl.querySelector('span').textContent = string;
+};
+
+const copyToClipboard = (el) => {
+    navigator.clipboard.writeText(el.textContent);
+};
+
+clampElement.addEventListener('click', (event) => {
+    copyToClipboard(event.target);
+    popup.classList.add('active');
+    setTimeout(() => {
+        popup.classList.remove('active')
+    }, 3000)
+});
+
 const render = (previews) => {
     previews.forEach((element) => {
         updateExample(element, state);
     });
+    updateClamp(clampElement, state);
     chart.data.datasets[0].data = calcChartFS(state);
     chart.update();
 };
